@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Attorney.AI</title>
+<link rel="icon" type="image/png" href="Logos_images/gavel_logo.png" />
+<style>
+  * { box-sizing: border-box; transition: all 0.3s ease; margin:0; padding:0; }
+  html, body { width: 100%; height: 100%; overflow-x: hidden; font-family: "Segoe UI", sans-serif; background-color: #313030; color: white; display: flex; }
+
+  /* Sidebar */
+  .sidebar {
+    width: 220px;
+    background-color: #222020;
+    padding: 20px;
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    flex-shrink: 0;
+  }
+
+  .sidebar_buttons {
+    display: flex; flex-direction: column; gap: 20px; align-items: center; margin-top: 10px;
+  }
+
+  .sidebar_buttons button {
+    width: 140px; height: 110px;
+    background: linear-gradient(145deg, #006894c5, #004461);
+    color: white; border: none; border-radius: 20px; cursor: pointer;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    box-shadow: 0 0 10px #000; font-weight: bold;
+  }
+
+  .sidebar_buttons button img { width:45px;height:45px;margin-bottom:6px; }
+  .sidebar_buttons button:hover { background: linear-gradient(145deg,#0099cc,#006577); box-shadow:0 0 25px #00f0ff,0 0 35px #00f0ff inset; transform: translateY(-2px); }
+
+  .accounts-section { border-top: 1px solid #444; padding-top: 15px; text-align: center; }
+  .accounts-section a { display: block; color: white; text-decoration: none; margin-bottom:10px; font-weight:bold; }
+  .accounts-section a:hover { color:#00f0ff; text-decoration: underline; }
+
+  /* Main content */
+  .main { flex: 1; width: calc(100% - 220px); display: flex; flex-direction: column; align-items: center; padding: 20px; overflow-y: auto; }
+
+  .top-bar { width: 100%; display:flex; justify-content:flex-end; align-items:center; gap:20px; }
+
+  .ellipsis-menu { position: relative; }
+  .ellipsis-button { background:none;border:none;font-size:28px;color:white;cursor:pointer;padding:10px; }
+
+  .dropdown-content, .chat-dropdown-content {
+    display:none; position:absolute; background-color:#2e2e2e; min-width:150px; border-radius:10px; box-shadow:0px 4px 12px rgba(0,0,0,0.4); z-index:100; overflow:hidden;
+  }
+
+  .dropdown-content a, .chat-dropdown-content a { color:white; padding:12px 15px; text-decoration:none; display:block; font-weight:bold; }
+  .dropdown-content a:hover, .chat-dropdown-content a:hover { background:#444; color:#00f0ff; }
+
+  .show { display:block; animation:fadeIn 0.3s ease forwards; }
+  @keyframes fadeIn { from{opacity:0; transform:translateY(-10px);} to{opacity:1; transform:translateY(0);} }
+
+  .logo-title { font-size:44px; font-weight:bold; margin:30px 0; }
+
+  .chat-box {
+    background-color:#525252; width:100%; max-width:100%; padding:40px; border-radius:30px;
+    display:flex; flex-direction:column; align-items:center; box-shadow:0 0 20px rgba(0,0,0,0.5);
+  }
+
+  .chat-input {
+    background-color:#222020; border-radius:15px; padding:20px; display:flex; align-items:center; width:100%; max-width:100%; gap:10px;
+  }
+  .chat-input input { background:none; border:none; outline:none; color:white; font-size:18px; flex:1; }
+  .chat-input input::placeholder { color:#bbb; }
+
+  .chat-input .icon button:hover { transform:scale(1.2); }
+
+  .chat-tools { display:flex; justify-content:space-between; width:100%; max-width:100%; padding:10px 0; font-size:14px; color:#ccc; }
+
+  .chat-tools .dropdown { position: relative; display: inline-block; }
+  .chat-tools .dropdown button { background-color: transparent; border: none; display:flex; align-items:center; gap:5px; cursor:pointer; font-weight:bold; color:white; }
+  .chat-tools .dropdown img { width:28px; height:28px; }
+  .chat-tools .dropdown button:hover img { transform:scale(1.2); filter:drop-shadow(0 0 8px #00f0ff); }
+
+</style>
+</head>
+<body>
+  <div class="sidebar">
+    <div>
+      <div class="logo" style="text-align:center;">
+        <img src="Logos_images/gavel_logo.png" alt="" style="width:100px;height:100px;" />
+      </div>
+      <div class="sidebar_buttons">
+        <button><img src="Logos_images/topic.png" alt="" /><span>New Chat</span></button>
+        <button><img src="Logos_images/compass.png" alt="" /><span>Explore</span></button>
+        <button><img src="Logos_images/white-magnifying-glass-icon-isolated-260nw-1573346785-removebg-preview.png" alt="" /><span>Advocate Finder</span></button>
+        <button><img src="Logos_images/clock--v3.png" alt="" /><span>History</span></button>
+      </div>
+    </div>
+    <div class="accounts-section">
+      <button style="background:transparent;border:none;"><img src="Logos_images/account.png" alt="" style="width:40px;height:40px;"></button>
+      <a href="#">Profile</a>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="top-bar">
+      <div class="ellipsis-menu">
+        <button class="ellipsis-button">⋮</button>
+        <div class="dropdown-content">
+          <a href="#">Settings</a>
+          <a href="#">Profile</a>
+          <a href="#">Logout</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="logo-title">Attorney.AI</div>
+
+    <div class="chat-box">
+      <div class="chat-input">
+        <span class="icon"><img src="Logos_images/gavel_logo.png" alt="" style="width:70px;height:70px;"></span>
+        <input type="text" placeholder="Ask Attorney...!!" />
+        <span class="icon"><button style="background:transparent;border:none;"><img src="Logos_images/download-removebg-preview.png" alt="" style="width:30px;height:30px;"></button></span>
+      </div>
+
+      <div class="chat-tools">
+        <div class="dropdown">
+          <button class="chat-dropdown-btn"><img src="Logos_images/COLOURBOX25878383-removebg-preview.png" alt="" />Attach Files</button>
+          <div class="chat-dropdown-content">
+            <a href="#">Upload PDF</a>
+            <a href="#">Upload Word</a>
+            <a href="#">Upload Image</a>
+          </div>
+        </div>
+
+        <div class="dropdown">
+          <button class="chat-dropdown-btn"><img src="Logos_images/scales.png" alt="" />Tools</button>
+          <div class="chat-dropdown-content">
+            <a href="#">Case Analyzer</a>
+            <a href="#">Legal Calculator</a>
+            <a href="#">Contract Checker</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+const ellipsisBtn = document.querySelector(".ellipsis-button");
+const dropdown = document.querySelector(".dropdown-content");
+ellipsisBtn.addEventListener("click", e => { e.stopPropagation(); dropdown.classList.toggle("show"); });
+
+document.querySelectorAll(".chat-dropdown-btn").forEach(btn=>{
+  const dropdown = btn.nextElementSibling;
+  btn.addEventListener("click", e=>{
+    e.stopPropagation();
+    dropdown.classList.toggle("show");
+    document.querySelectorAll(".chat-dropdown-content").forEach(dd=>{ if(dd!==dropdown) dd.classList.remove("show"); });
+  });
+});
+
+window.addEventListener("click", ()=>{
+  document.querySelectorAll(".dropdown-content,.chat-dropdown-content").forEach(dd=>dd.classList.remove("show"));
+});
+</script>
+</body>
+</html>

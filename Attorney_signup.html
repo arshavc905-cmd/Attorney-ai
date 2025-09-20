@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up</title>
+    <link rel="icon" type="image/png" href="Logos_images/gavel_logo.png" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body,
+      html {
+        height: 100%;
+        background: radial-gradient(circle at center, #0f0f0f, #000000);
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .signup-container {
+        background: linear-gradient(145deg, #1a1a1a, #0a0a0a);
+        padding: 40px;
+        border-radius: 30px;
+        width: 450px;
+        text-align: center;
+        color: white;
+        box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+      }
+
+      .signup-container h1 {
+        margin-bottom: 30px;
+        font-size: 38px;
+        font-weight: bold;
+        color: #fcffff;
+        
+        letter-spacing: 1px;
+      }
+
+      .input-field {
+        width: 100%;
+        padding: 14px;
+        margin: 10px 0;
+        border-radius: 25px;
+        border: none;
+        background-color: #2d2d2d;
+        color: white;
+        font-size: 16px;
+        outline: none;
+        transition: all 0.3s ease-in-out;
+      }
+
+      .input-field:focus {
+        box-shadow: 0 0 10px #00eaff, 0 0 20px #00eaff;
+        border: 1px solid #00eaff;
+      }
+
+      .terms {
+        text-align: left;
+        font-size: 14px;
+        margin-top: 15px;
+        margin-bottom: 10px;
+      }
+
+      .terms a {
+        color: #00eaff;
+        text-decoration: none;
+        transition: 0.3s;
+      }
+
+      .terms a:hover {
+        color: #80f7ff;
+        text-shadow: 0 0 10px #00eaff;
+      }
+
+      .checkbox-container {
+        text-align: left;
+        font-size: 14px;
+        margin-bottom: 20px;
+      }
+
+      .login-link {
+        font-size: 14px;
+        color: #dcdcdc;
+        margin-top: 15px;
+      }
+
+      .login-link a {
+        color: #00eaff;
+        text-decoration: none;
+        transition: 0.3s;
+      }
+
+      .login-link a:hover {
+        color: #80f7ff;
+        text-shadow: 0 0 10px #00eaff;
+      }
+
+      .message {
+        margin-top: 10px;
+        font-size: 14px;
+        color: lightgreen;
+      }
+
+      .error {
+        color: #ff7070;
+        text-shadow: 0 0 5px #ff4b4b, 0 0 10px #ff1f1f;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="signup-container">
+      <h1>Sign Up</h1>
+      <form id="signupForm">
+        <input
+          type="email"
+          id="email"
+          placeholder="Email"
+          class="input-field"
+          required
+        />
+        <input
+          type="tel"
+          id="phone"
+          placeholder="Phone Number"
+          class="input-field"
+          required
+        />
+        <input
+          type="text"
+          id="username"
+          placeholder="Username"
+          class="input-field"
+          required
+        />
+        <input
+          type="password"
+          id="password"
+          placeholder="Password"
+          class="input-field"
+          required
+        />
+        <input
+          type="password"
+          id="confirmPassword"
+          placeholder="Confirm Password"
+          class="input-field"
+          required
+        />
+
+        <div class="terms">
+          <a href="#">Terms & Conditions</a>
+        </div>
+
+        <div class="checkbox-container">
+          <label><input type="checkbox" id="agree" /> I Agree</label>
+        </div>
+
+        <button
+          type="submit"
+          class="w-full py-3 mt-4 text-lg font-semibold text-white rounded-full shadow-lg transition duration-300 bg-cyan-600 hover:bg-cyan-500 hover:shadow-cyan-500/50"
+        >
+          Create Account
+        </button>
+      </form>
+
+      <div class="login-link">
+        Already have an account? <a href="attorney_signin_colour.html">Sign In</a>
+      </div>
+      <div id="message" class="message"></div>
+    </div>
+
+    <script>
+      const form = document.getElementById("signupForm");
+      const message = document.getElementById("message");
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const email = document.getElementById("email").value.trim();
+        const phone = document.getElementById("phone").value.trim();
+        const username = document.getElementById("username").value.trim();
+        const password = document.getElementById("password").value.trim();
+        const confirmPassword = document
+          .getElementById("confirmPassword")
+          .value.trim();
+        const agree = document.getElementById("agree").checked;
+
+        const emailPattern = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+
+        message.classList.remove("error");
+        message.style.color = "lightgreen";
+
+        if (!emailPattern.test(email)) {
+          message.textContent = "Invalid email.";
+          message.classList.add("error");
+          return;
+        }
+
+        if (password !== confirmPassword) {
+          message.textContent = "Passwords do not match.";
+          message.classList.add("error");
+          return;
+        }
+
+        if (!agree) {
+          message.textContent = "Please agree to the Terms & Conditions.";
+          message.classList.add("error");
+          return;
+        }
+
+        message.textContent = "Account created successfully!";
+        message.classList.remove("error");
+      });
+    </script>
+  </body>
+</html>

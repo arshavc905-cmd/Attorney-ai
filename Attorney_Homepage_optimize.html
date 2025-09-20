@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Attorney.AI</title>
+    <link rel="icon" type="image/png" href="Logos_images/gavel_logo.png" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(to right, #0f0f0f, #1a1a1a, #111);
+        color: white;
+        overflow-x: hidden;
+      }
+
+      h1, h2 { 
+        text-shadow: 0 0 8px rgba(0, 174, 239, 0.8),
+                     0 0 20px rgba(0, 174, 239, 0.6),
+                     0 0 30px rgba(0, 174, 239, 0.4);
+      }
+
+      p { text-shadow: 0 0 4px rgba(0, 255, 255, 0.3); }
+
+      .header {
+        background: linear-gradient(to right, #1f1f1f, #2e2e2e);
+        height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 2rem;
+        position: fixed;
+        top: 0.75rem;
+        left: 0.75rem;
+        right: 0.75rem;
+        z-index: 100;
+        border-radius: 16px;
+        box-shadow: 0 0 20px rgba(0, 174, 239, 0.4);
+      }
+      
+      .header-buttons {
+        display: flex;
+        gap: 1rem;
+      }
+      .sidebar {
+        background: linear-gradient(to bottom right, #0f4c75, #14627d);
+        position: fixed;
+        top: 110px;
+        left: clamp(1rem, 5vw, 5rem);
+        width: clamp(180px, 15vw, 250px);
+        height: calc(100vh - 170px);
+        padding-top: 25px;
+        border-radius: 16px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        box-shadow: 0 0 20px rgba(0, 174, 239, 0.4);
+      }
+
+      .sidebar a {
+        font-size: 20px;
+        display: block;
+        width: 80%;
+        padding: 12px 18px;
+        color: white;
+        text-decoration: none;
+        text-align: center;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.05);
+        transition: all 0.3s ease;
+        text-shadow: 0 0 6px rgba(0, 255, 255, 0.6);
+      }
+
+      .sidebar a:hover {
+        background: rgba(0, 174, 239, 0.3);
+        transform: scale(1.05);
+        box-shadow: 0 0 12px rgba(0, 174, 239, 0.6);
+      }
+
+      .sidebar a.active {
+        background: rgba(0, 174, 239, 0.6);
+        font-weight: bold;
+        box-shadow: 0 0 15px rgba(0, 174, 239, 0.8);
+      }
+
+      .main-content {
+        margin-left: calc(clamp(180px, 15vw, 250px) + 2rem);
+        padding: 140px 40px 60px;
+      }
+
+      .content-section {
+        padding: 60px 20px;
+        max-width: 1000px;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      #home p { font-size: 1.25rem; line-height: 1.8rem; margin-top: 1rem; }
+
+      .features-grid, .blog-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 25px;
+        padding: 40px 0;
+      }
+
+      .feature-box, .blog-card {
+        background-color: #444;
+        border-radius: 16px;
+        padding: 25px;
+        color: white;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        text-align: left;
+      }
+
+      .feature-box:hover, .blog-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+      }
+
+      .feature-box h3, .blog-card h3 {
+        font-size: 20px;
+        color: #00bcd4;
+        margin-bottom: 8px;
+      }
+
+      .feature-box p, .blog-card p { font-size: 16px; color: #ddd; }
+
+      .box7 { grid-column: span 2; }
+
+      /* FAQ Dropdowns */
+      .faq-item {
+        background: #333;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      .faq-question {
+        cursor: pointer;
+        padding: 15px;
+        font-weight: bold;
+        background: rgba(0, 174, 239, 0.2);
+        transition: background 0.3s;
+      }
+
+      .faq-question:hover { background: rgba(0, 174, 239, 0.4); }
+
+      .faq-answer {
+        padding: 15px;
+        display: none;
+        font-weight: normal;
+        background: #222;
+      }
+
+      footer.full-footer {
+        background: linear-gradient(to right, #202020, #333);
+        color: white;
+        padding: 40px;
+        font-size: 15px;
+        width: 100%;
+        box-shadow: 0 0 20px rgba(0, 174, 239, 0.3);
+      }
+
+      .footer-content { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 40px; }
+
+      .footer-column h2 {
+        font-size: 22px;
+        text-shadow: 0 0 10px rgba(0, 174, 239, 0.7);
+        margin-bottom: 10px;
+      }
+
+      @media (max-width: 768px) {
+        .sidebar { display: none; }
+        .main-content { margin-left: 0; padding: 140px 20px 60px; }
+        .header { margin-left: 0; width: 100%; left: 0; }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Header -->
+    <div class="header">
+      <h1 class="text-cyan-400 font-bold text-2xl">Attorney.AI</h1>
+      <div class="header-buttons">
+        <a href="Attorney_Searchpage_optimized.html">
+          <button class="px-6 py-3 rounded-full bg-cyan-600 text-white font-bold shadow-lg hover:bg-cyan-500 hover:shadow-cyan-400/50 transition-all duration-300">Try Attorney</button>
+        </a>
+        <a href="attorney_signin_colour.html">
+          <button class="px-6 py-3 rounded-full bg-green-600 text-white font-bold shadow-lg hover:bg-green-500 hover:shadow-green-400/50 transition-all duration-300">Sign Up</button>
+        </a>
+      </div>  
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <a href="#home" class="sidebar-link">Home</a>
+      <a href="#features"class="sidebar-link">Features</a>
+      <a href="#blog"class="sidebar-link">Blogs</a>
+      <a href="#faqs"class="sidebar-link">Faq's</a>
+      <a href="#usecases"class="sidebar-link">Use Cases</a>
+      <a href="#reviews"class="sidebar-link">Reviews</a>
+      <a href="#about"class="sidebar-link">About Us</a>
+    </div>
+    <script>
+  const sections = document.querySelectorAll('.content-section');
+  const sidebarLinks = document.querySelectorAll('.sidebar a');
+
+  window.addEventListener('scroll', () => {
+    let current = '';
+
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop - 150;
+      const sectionHeight = section.clientHeight;
+      if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+        current = section.getAttribute('id');
+      }
+    });
+
+    sidebarLinks.forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute('href') === '#' + current) {
+        link.classList.add('active');
+      }
+    });
+  });
+
+  // Optional: smooth sidebar scroll effect
+  const sidebar = document.querySelector('.sidebar');
+  let lastScrollTop = 0;
+  window.addEventListener('scroll', () => {
+    let st = window.pageYOffset || document.documentElement.scrollTop;
+    sidebar.style.transition = 'transform 0.2s ease-out';
+    if (st > lastScrollTop) {
+      sidebar.style.transform = 'translateY(10px)';
+    } else {
+      sidebar.style.transform = 'translateY(-10px)';
+    }
+    lastScrollTop = st <= 0 ? 0 : st;
+  });
+</script>
+
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Home -->
+      <div id="home" class="content-section">
+        <h2 class="text-4xl text-cyan-300 font-semibold">Hi 👋 Welcome to <strong>Attorney</strong></h2>
+        <p>
+          At Attorney.AI, we harness the power of <span class="text-cyan-400 font-bold">AI</span> At Attorney.AI, we harness the power of AI to make legal support faster, smarter, and more accessible. Whether you're a law firm or an individual, our AI-driven platform delivers real-time insights, document analysis, legal research, and case assistance with precision. Our system simplifies complex legal jargon into clear, understandable language, helping users make informed decisions quickly. From contract review and compliance checks to predictive case outcomes, Attorney.AI empowers you to navigate the legal landscape efficiently. By integrating cutting-edge technology with deep legal expertise, we aim to democratize access to justice, save time, reduce costs, and enhance transparency across all legal processes.
+        </p>
+      </div>
+
+      <!-- Features -->
+      <!-- Features Section -->
+<div id="features" class="content-section">
+  <h2 class="text-4xl text-cyan-300 font-semibold mb-4">Features</h2>
+  <p class="mb-8">Explore our legal tools and resources:</p>
+  
+  <div class="features-grid">
+    <!-- IPC -->
+    <div class="feature-box flex flex-col items-center gap-4 p-6 hover:scale-105 transition-transform duration-300">
+      <img src="https://img.icons8.com/ios-filled/80/00bcd4/law.png" alt="IPC Icon" class="w-16 h-16">
+      <h3>BNS</h3>
+      <p>Knowledge about IPC and BNS Sections</p>
+    </div>
+
+    <!-- Legal Assistant -->
+    <div class="feature-box flex flex-col items-center gap-4 p-6 hover:scale-105 transition-transform duration-300">
+      <img src="https://img.icons8.com/ios-filled/80/00bcd4/robot.png" alt="Assistant Icon" class="w-16 h-16">
+      <h3>Legal Assistant</h3>
+      <p>24/7 AI-powered legal help at your fingertips.</p>
+    </div>
+
+    <!-- Case Tracker -->
+    <div class="feature-box flex flex-col items-center gap-4 p-6 hover:scale-105 transition-transform duration-300">
+      <img src="https://img.icons8.com/ios-filled/80/00bcd4/timeline.png" alt="Case Tracker Icon" class="w-16 h-16">
+      <h3>Case Tracker</h3>
+      <p>Track your case status with instant notifications.</p>
+    </div>
+
+    <!-- Legal Drafts -->
+    <div class="feature-box flex flex-col items-center gap-4 p-6 hover:scale-105 transition-transform duration-300">
+      <img src="https://img.icons8.com/ios-filled/80/00bcd4/document.png" alt="Draft Icon" class="w-16 h-16">
+      <h3>Legal Drafts</h3>
+      <p>Generate legal notices, affidavits, and contracts easily.</p>
+    </div>
+
+    <!-- Document Review -->
+    <div class="feature-box flex flex-col items-center gap-4 p-6 hover:scale-105 transition-transform duration-300">
+      <img src="https://img.icons8.com/ios-filled/80/00bcd4/documents.png" alt="Document Review Icon" class="w-16 h-16">
+      <h3>Document Review</h3>
+      <p>AI-assisted clause analysis and document comparison.</p>
+    </div>
+
+    <!-- Precedent Search -->
+    <div class="feature-box flex flex-col items-center gap-4 p-6 hover:scale-105 transition-transform duration-300">
+      <img src="https://img.icons8.com/ios-filled/80/00bcd4/books.png" alt="Precedent Icon" class="w-16 h-16">
+      <h3>Precedent Search</h3>
+      <p>Find relevant case laws and judgments in seconds.</p>
+    </div>
+
+    <!-- AI Chat Interface -->
+    <div class="feature-box box7 flex flex-col items-center gap-4 p-6 hover:scale-105 transition-transform duration-300">
+      <img src="https://img.icons8.com/ios-filled/80/00bcd4/chat.png" alt="Chat Interface Icon" class="w-16 h-16">
+      <h3>AI Chat Interface</h3>
+      <p>Chat with our legal bot for smart answers anytime.</p>
+    </div>
+  </div>
+</div>
+
+
+      <!-- Blog Section with Cards -->
+      <!-- Blog Section with Expandable Cards -->
+<div id="blog" class="content-section">
+  <h2 class="text-4xl text-cyan-300 font-semibold">Blogs</h2>
+  <p>Read insights and updates from the Attorney.AI team.</p>
+  <div class="blog-grid">
+    <div class="blog-card">
+      <h3>AI in Legal Research</h3>
+      <p>Discover how AI speeds up legal research and provides accurate case references.</p>
+      <p class="full-text" style="display:none;">
+        This AI-powered approach allows law firms and individuals to save hours of research, quickly identify key clauses, and make informed decisions based on precise data analytics. Efficiency and accuracy are improved dramatically.
+      </p>
+      <button class="read-more-btn font-bold text-cyan-400 mt-2">
+        + Read More
+      </button>
+    </div>
+
+    <div class="blog-card">
+      <h3>Document Automation</h3>
+      <p>Learn how automated legal documents save time and reduce errors.</p>
+      <p class="full-text" style="display:none;">
+        By translating legal jargon into understandable terms, Attorney.AI ensures users comprehend obligations, rights, and risks without losing any legal accuracy, enhancing both trust and accessibility.
+      </p>
+      <button class="read-more-btn font-bold text-cyan-400 mt-2">
+        + Read More
+      </button>
+    </div>
+
+    <div class="blog-card">
+      <h3><b>Case Tracking Innovations</b></h3>
+      <p>Stay updated with AI-driven case tracking tools that notify you instantly.</p>
+      <p class="full-text" style="display:none;">
+        In this case study, Attorney.AI processed hundreds of legal documents within minutes, highlighting crucial sections and generating actionable summaries, demonstrating AI’s potential to revolutionize legal workflows.
+      </p>
+      <button class="read-more-btn font-bold text-cyan-400 mt-2">
+        + Read More
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Blog JS -->
+<script>
+  const readMoreBtns = document.querySelectorAll(".read-more-btn");
+  readMoreBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const fullText = btn.previousElementSibling;
+      const isVisible = fullText.style.display === "block";
+
+      fullText.style.display = isVisible ? "none" : "block";
+      btn.textContent = isVisible ? "+ Read More" : "- Read Less";
+    });
+  });
+</script>
+
+
+      <!-- FAQ Section with Dropdowns -->
+      <div id="faqs" class="content-section">
+        <h2 class="text-4xl text-cyan-300 font-semibold">Frequently Asked Questions</h2>
+        <p>Some FAQ's regarding Attorney</p>
+        <div class="faq-item">
+          <div class="faq-question">1. What is Attorney.AI?</div>
+          <div class="faq-answer">Attorney.AI is an AI-powered platform that provides legal insights, document analysis, and case assistance in real time.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">2. How secure is my data?</div>
+          <div class="faq-answer">All data is encrypted and stored securely, ensuring your privacy is always protected.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">3. Can I use it for personal cases?</div>
+          <div class="faq-answer">Yes, Attorney.AI is designed for both individual users and law firms.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">4. Is there a subscription fee?</div>
+          <div class="faq-answer">We offer free and premium plans with additional features for subscribers.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">5. How accurate is the AI advice?</div>
+          <div class="faq-answer">Our AI uses verified legal databases and case law to provide accurate guidance, but it does not replace a licensed attorney.</div>
+        </div>
+      </div>
+
+      <!-- Use Cases -->
+     <!-- Use Cases -->
+<div id="usecases" class="content-section">
+  <h2 class="text-4xl text-cyan-300 font-semibold mb-4">Use Cases</h2>
+  <p class="mb-8">Discover how Attorney.AI supports solo users, startups, and enterprises with AI-driven legal solutions.</p>
+
+  <div class="features-grid">
+    <!-- Solo Users -->
+    <div class="feature-box flex flex-col items-center gap-4 p-6 hover:scale-105 transition-transform duration-300">
+      <img src="https://img.icons8.com/ios-filled/80/00bcd4/user.png" alt="Solo Users Icon" class="w-16 h-16">
+      <h3>Solo Users</h3>
+      <p>Individual users can quickly analyze contracts, draft legal documents, and access expert legal advice anytime.</p>
+    </div>
+
+    <!-- Startups -->
+    <div class="feature-box flex flex-col items-center gap-4 p-6 hover:scale-105 transition-transform duration-300">
+      <img src="https://img.icons8.com/ios-filled/80/00bcd4/idea.png" alt="Startups Icon" class="w-16 h-16">
+      <h3>Startups</h3>
+      <p>AI-assisted compliance checks, contract generation, and legal risk mitigation to accelerate business growth.</p>
+    </div>
+
+    <!-- Law Firms -->
+    <div class="feature-box flex flex-col items-center gap-4 p-6 hover:scale-105 transition-transform duration-300">
+      <img src="https://img.icons8.com/ios-filled/80/00bcd4/court.png" alt="Law Firms Icon" class="w-16 h-16">
+      <h3>Law Firms</h3>
+      <p>Enhance client services with AI-powered research, case analysis, and document review for faster outcomes.</p>
+    </div>
+
+    <!-- Enterprises -->
+    <div class="feature-box flex flex-col items-center gap-4 p-6 hover:scale-105 transition-transform duration-300">
+      <img src="https://img.icons8.com/ios-filled/80/00bcd4/office.png" alt="Enterprises Icon" class="w-16 h-16">
+      <h3>Enterprises</h3>
+      <p>Manage corporate legal workflows efficiently with automated contract analysis, compliance, and policy enforcement.</p>
+    </div>
+    <!-- Freelancers / Independent Consultants -->
+<div class="feature-box flex flex-col items-center gap-4 p-6 hover:scale-105 transition-transform duration-300">
+  <img src="https://img.icons8.com/ios-filled/80/00bcd4/contract-job.png" alt="Freelancers Icon" class="w-16 h-16">
+  <h3>Freelancers & Consultants</h3>
+  <p>Access contract templates, review client agreements, and ensure compliance while working independently.</p>
+</div>
+
+<!-- Non-Profits / NGOs -->
+<div class="feature-box flex flex-col items-center gap-4 p-6 hover:scale-105 transition-transform duration-300">
+  <img src="https://img.icons8.com/ios-filled/80/00bcd4/charity.png" alt="NGO Icon" class="w-16 h-16">
+  <h3>Non-Profits & NGOs</h3>
+  <p>Streamline grant agreements, donor contracts, and regulatory compliance with AI-driven legal support.</p>
+</div>
+
+  </div>
+</div>
+
+
+      <!-- Reviews -->
+      <div id="reviews" class="content-section">
+  <h2 class="text-4xl text-cyan-300 font-semibold">Reviews</h2>
+  <p>What our users say about the platform.</p>
+
+  <div class="features-grid">
+    <div class="feature-box">
+      <p>
+        “Attorney.AI helped me draft legal notices quickly and easily. A must-have for individuals.”
+      </p>
+    </div>
+
+    <div class="feature-box">
+      <p>
+        “The AI legal assistant is accurate, responsive, and simplifies complex legal jargon effectively.”
+      </p>
+    </div>
+
+    <div class="feature-box">
+      <p>
+        “Our law firm uses it for document review — saves countless hours and improves client service.”
+      </p>
+    </div>
+
+    
+  </div>
+</div>
+
+    <!-- Footer -->
+    <footer class="full-footer">
+      <div class="footer-content">
+        <div class="footer-column">
+          <h2><img src="hammer logo.png" alt=""> Attorney.AI</h2>
+          <p>A product by <strong>TensorCore</strong></p>
+          <p><strong>Developed By</strong></p>
+          <a href="">Ayush Paul |</a>
+          <a href="">Aritra Das |</a>
+          <a href="">Arshav Chakraborty</a>
+          
+        </div>
+        <div class="footer-column">
+          <p><strong>Contact Us</strong></p>
+          <p>📱 +91 12345xxxxx</p>
+          <p>📧 tensorcore@gmail.com</p>
+          <p><em><strong>Secure. Smart. Unmatched Legal Insight.</strong></em></p>
+        </div>
+      </div>
+      <p class="text-center mt-6 text-gray-400">&copy; 2025 Attorney.AI All rights reserved.</p>
+    </footer>
+
+    <!-- FAQ JS -->
+    <script>
+      const faqQuestions = document.querySelectorAll(".faq-question");
+      faqQuestions.forEach(q => {
+        q.addEventListener("click", () => {
+          const ans = q.nextElementSibling;
+          ans.style.display = ans.style.display === "block" ? "none" : "block";
+        });
+      });
+    </script>
+  </body>
+</html>

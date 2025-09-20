@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign In</title>
+    <link rel="icon" type="image/png" href="Logos_images/gavel_logo.png" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body,
+      html {
+        height: 100%;
+        background: radial-gradient(circle at center, #0f0f0f, #000000);
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .signin-container {
+        background: linear-gradient(145deg, #1a1a1a, #0a0a0a);
+        padding: 40px;
+        border-radius: 30px;
+        width: 400px;
+        height: 520px;
+        text-align: center;
+        color: white;
+        box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+      }
+
+      .signin-container h1 {
+        margin-bottom: 30px;
+        font-size: 38px;
+        font-weight: bold;
+        color: #e8eff0;
+
+        letter-spacing: 1px;
+      }
+
+      .input-field {
+        width: 100%;
+        padding: 14px;
+        margin: 10px 0;
+        border-radius: 25px;
+        border: none;
+        background-color: #2d2d2d;
+        color: white;
+        font-size: 16px;
+        outline: none;
+        transition: all 0.3s ease-in-out;
+      }
+
+      .input-field:focus {
+        box-shadow: 0 0 10px #00eaff, 0 0 20px #00eaff;
+        border: 1px solid #00eaff;
+      }
+
+      .forgot-password {
+        text-align: right;
+        font-size: 14px;
+        margin-top: 5px;
+      }
+
+      .forgot-password a {
+        color: #00eaff;
+        text-decoration: none;
+        transition: 0.3s;
+      }
+
+      .forgot-password a:hover {
+        color: #80f7ff;
+        text-shadow: 0 0 10px #00eaff;
+      }
+
+      .signup-link {
+        font-size: 14px;
+        color: #dcdcdc;
+      }
+
+      .signup-link a {
+        color: #00eaff;
+        text-decoration: none;
+        transition: 0.3s;
+      }
+
+      .signup-link a:hover {
+        color: #80f7ff;
+        text-shadow: 0 0 10px #00eaff;
+      }
+
+      .message {
+        margin-top: 10px;
+        font-size: 14px;
+        color: lightgreen;
+      }
+
+      .error {
+        color: #ff7070;
+        text-shadow: 0 0 5px #ff4b4b, 0 0 10px #ff1f1f;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="signin-container">
+      <h1>Sign In</h1>
+      <form id="loginForm">
+        <input
+          type="text"
+          id="emailPhone"
+          placeholder="Email or Phone Number"
+          class="input-field"
+        />
+        <input
+          type="password"
+          id="password"
+          placeholder="Password"
+          class="input-field"
+        />
+        <div class="forgot-password">
+          <a href="attorney_forgotpass.html">Forgot Password?</a>
+        </div>
+        <a href="Attorney_Searchpage_optimized.html"
+          ><button
+            type="submit"
+            class="w-full py-3 mt-10 text-lg font-semibold text-white rounded-full shadow-lg transition duration-300 bg-cyan-600 hover:bg-cyan-500 hover:shadow-cyan-500/50"
+          >
+            Log In
+          </button></a
+        >
+      </form>
+      <div class="signup-link mt-6">
+        Don’t have an account? <a href="Attorney_signup.html">Sign Up</a>
+      </div>
+      <div id="message" class="message"></div>
+    </div>
+
+    <script>
+      const form = document.getElementById("loginForm");
+      const message = document.getElementById("message");
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const emailPhone = document.getElementById("emailPhone").value.trim();
+        const password = document.getElementById("password").value.trim();
+
+        const emailPattern = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
+        const phonePattern = /^[0-9]{10}$/;
+
+        message.classList.remove("error");
+        message.style.color = "lightgreen";
+
+        if (!emailPhone || !password) {
+          message.textContent = "Please fill out both fields.";
+          message.classList.add("error");
+          return;
+        }
+
+        if (!emailPattern.test(emailPhone) && !phonePattern.test(emailPhone)) {
+          message.textContent = "Invalid email or phone number.";
+          message.classList.add("error");
+          return;
+        }
+
+        const validEmail = "user@example.com";
+        const validPassword = "password123";
+
+        if (emailPhone !== validEmail) {
+          message.textContent = "Invalid email or phone number.";
+          message.classList.add("error");
+        } else if (password !== validPassword) {
+          message.textContent = "Incorrect password.";
+          message.classList.add("error");
+        } else {
+          message.textContent = "Logged in successfully!";
+          message.classList.remove("error");
+          message.style.color = "lightgreen";
+          // setTimeout(() => window.location.href = "dashboard.html", 1000);
+        }
+      });
+    </script>
+  </body>
+</html>
